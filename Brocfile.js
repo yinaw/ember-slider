@@ -17,4 +17,9 @@ var app = new EmberAddon();
 // please specify an object with the list of modules as keys
 // along with the exports of each module as its value.
 
+app.import('bower_components/jquery-ui/jquery-ui.js');
+app.import('bower_components/jquery-ui/ui/slider.js');
+app.import('bower_components/jquery-ui/themes/base/slider.css');
+app.import('bower_components/jquery-ui/themes/base/theme.css');
+
 module.exports = app.toTree();
