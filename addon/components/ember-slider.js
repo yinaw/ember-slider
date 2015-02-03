@@ -22,13 +22,24 @@ export default Ember.Component.extend({
 				self.set('value', ui.value);
 			}
 		});
+
+		this.registerListeners();
 	}.on('didInsertElement'),
 
-	_valueChanged : function() {
-		this.$().slider('option', 'value', this.get('value'));
-	}.observes('value'),
+	registerListeners: function () {
+		var props = ['animate', 'disabled', 'max',
+			'min', 'orientation', 'range', 'step',
+			'value', 'values'];
+		/*jshint loopfunc:false*/
+		for (var i = 0; i < props.length; i++) {
+			this.addObserver(props[i], this, function (target, key) {
+				this.$().slider('option',key, this.get(key));
+			}.bind(this));
+		}
+		/*jshint loopfunc:true*/
+	},
 
 	destroyEasyPie: function() {
-		this.$().destroy();
+		this.$().slider('destroy');
 	}.on('willDestroyElement')
 });
