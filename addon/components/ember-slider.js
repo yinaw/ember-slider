@@ -5,10 +5,12 @@ export default Ember.Component.extend({
 	startAction: null,
 	stopAction: null,
 	changeAction: null,
+  actionTarget: null,
 
 	didInsertElement: function() {
 		this._super.apply(this, arguments);
 		var self = this;
+    var target = this.get('actionTarget') || this;
 
 		this.$().slider({
 			animate : this.get('animate'),
@@ -24,13 +26,13 @@ export default Ember.Component.extend({
 				self.set('value', ui.value);
 			},
 			start : function() {
-				self.sendAction('startAction');
+        (target.sendAction) ? target.sendAction('startAction') :  target.send('startAction');
 			},
 			stop : function() {
-				self.sendAction('stopAction');
+        (target.sendAction) ? target.sendAction('stopAction') :  target.send('stopAction');
 			},
 			change : function() {
-				self.sendAction('changeAction');
+        (target.sendAction) ? target.sendAction('changeAction') :  target.send('changeAction');
 			}
 		});
 
