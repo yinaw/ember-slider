@@ -25,14 +25,14 @@ export default Ember.Component.extend({
 			slide : function(event, ui) {
 				self.set('value', ui.value);
 			},
-			start : function() {
-        (target.sendAction) ? target.sendAction('startAction') :  target.send('startAction');
+			start : function(event, ui) {
+        (target.sendAction) ? target.sendAction('startAction', ui.value) :  target.send('startAction', ui.value);
 			},
-			stop : function() {
-        (target.sendAction) ? target.sendAction('stopAction') :  target.send('stopAction');
+			stop : function(event, ui) {
+        (target.sendAction) ? target.sendAction('stopAction', ui.value) :  target.send('stopAction', ui.value);
 			},
-			change : function() {
-        (target.sendAction) ? target.sendAction('changeAction') :  target.send('changeAction');
+			change : function(event, ui) {
+        (target.sendAction) ? target.sendAction('changeAction', ui.value) :  target.send('changeAction', ui.value);
 			}
 		});
 
