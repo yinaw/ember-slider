@@ -8,12 +8,11 @@ export default Ember.Controller.extend({
 	sliderMax: 100,
 	isRange: false,
 
-sliderValsString: function (key, val /*, oldVal*/) {
+	sliderValsString: Ember.computed('sliderVals', function (key, val) {
 		if (arguments.length > 1) {
 			return this.set('sliderVals', val.split(','));
 		}
-		else {
-			return this.get('sliderVals').join(', ');
-		}
-	}.property('sliderVals')
+
+		return this.get('sliderVals').join(', ');
+	})
 });

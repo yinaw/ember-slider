@@ -2,11 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	classNames: ['silder'],
-	//attributeBindings: ['dataPercent:data-percent'],
+	startAction: null,
+	stopAction: null,
+	changeAction: null,
 
-	_initSlider: function() {
+	didInsertElement: function() {
+		this._super.apply(this, arguments);
 		var self = this;
-		this._super();
 
 		this.$().slider({
 			animate : this.get('animate'),
@@ -20,11 +22,20 @@ export default Ember.Component.extend({
 			values : this.get('values'),
 			slide : function(event, ui) {
 				self.set('value', ui.value);
+			},
+			start : function() {
+				self.sendAction('startAction');
+			},
+			stop : function() {
+				self.sendAction('stopAction');
+			},
+			change : function() {
+				self.sendAction('changeAction');
 			}
 		});
 
 		this.registerListeners();
-	}.on('didInsertElement'),
+	},
 
 	registerListeners: function () {
 		var props = ['animate', 'disabled', 'max',
@@ -33,7 +44,7 @@ export default Ember.Component.extend({
 		/*jshint loopfunc:false*/
 		for (var i = 0; i < props.length; i++) {
 			this.addObserver(props[i], this, function (target, key) {
-				this.$().slider('option',key, this.get(key));
+				this.$().slider('option', key, this.get(key));
 			}.bind(this));
 		}
 		/*jshint loopfunc:true*/
