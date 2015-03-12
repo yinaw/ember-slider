@@ -2,15 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 	classNames: ['silder'],
-	startAction: null,
-	stopAction: null,
 	changeAction: null,
-  actionTarget: null,
+	actionTarget: null,
 
 	didInsertElement: function() {
 		this._super.apply(this, arguments);
 		var self = this;
-    var target = this.get('actionTarget') || this;
+		var target = this.get('actionTarget') || this;
 
 		this.$().slider({
 			animate : this.get('animate'),
@@ -25,14 +23,8 @@ export default Ember.Component.extend({
 			slide : function(event, ui) {
 				self.set('value', ui.value);
 			},
-			start : function(event, ui) {
-        (target.sendAction) ? target.sendAction('startAction', ui.value) :  target.send('startAction', ui.value);
-			},
-			stop : function(event, ui) {
-        (target.sendAction) ? target.sendAction('stopAction', ui.value) :  target.send('stopAction', ui.value);
-			},
 			change : function(event, ui) {
-        (target.sendAction) ? target.sendAction('changeAction', ui.value) :  target.send('changeAction', ui.value);
+				(target.sendAction) ? target.sendAction('changeAction', ui.value) :	target.send(this.get('changeAction'), ui.value);
 			}
 		});
 
