@@ -24,7 +24,7 @@ export default Ember.Component.extend({
 				self.set('value', ui.value);
 			},
 			change : function(event, ui) {
-				(target.sendAction) ? target.sendAction('changeAction', ui.value) :	target.send(this.get('changeAction'), ui.value);
+				(target.sendAction) ? target.sendAction('changeAction', ui.value) :	target.send(self.get('changeAction'), ui.value);
 			}
 		});
 
