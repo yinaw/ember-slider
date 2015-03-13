@@ -1,36 +1,32 @@
 import Ember from 'ember';
 
-var props = [
-	'animate', 'disabled', 'max',
-	'min', 'orientation', 'range', 'step',
-	'value', 'values'
-];
+var props = Object.keys(Ember.$.ui.slider._proto.options);
 
 export default Ember.Component.extend({
 	classNames:   ['silder'],
 	changeAction: null,
 	actionTarget: null,
+	
+	propTypes: {
+		orientation: String,
+		max:         Number,
+		min:         Number,
+		disabled:    Boolean,
+		value:       Number,
+		step:        Number
+	},
 
 	didInsertElement: function() {
 		this._super.apply(this, arguments);
 
-		var self   = this;
-		var target = this.get('actionTarget') || this;
+		var self    = this;
+		var target  = this.get('actionTarget') || this;
 
-		this.$().slider({
-			animate : this.get('animate'),
-			disabled : this.get('disabled'),
-			max : this.get('max'),
-			min : this.get('min'),
-			orientation : this.get('orientation'),
-			range : this.get('range'),
-			step : this.get('step'),
-			value : this.get('value'),
-			values : this.get('values'),
-			slide : function(event, ui) {
+		var options = Ember.merge(this.getProperties(props), {
+			slide : function (event, ui) {
 				self.set('value', ui.value);
 			},
-			change : function(event, ui) {
+			change : function (event, ui) {
 				if (target.sendAction) {
 					target.sendAction('changeAction', ui.value);
 				} else {
@@ -38,6 +34,8 @@ export default Ember.Component.extend({
 				}
 			}
 		});
+
+		this.$().slider(options);
 
 		this.registerListeners();
 	},
@@ -49,7 +47,14 @@ export default Ember.Component.extend({
 	},
 
 	proxySlider: function (target, key) {
-		this.$().slider('option', key, this.get(key));
+		var propType = this.propTypes[key];
+		var value    = this.get(key);
+
+		if (propType) {
+			value = propType(value);
+		}
+
+		this.$().slider('option', key, value);
 	},
 
 	registerListeners: function () {
