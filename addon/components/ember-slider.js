@@ -17,7 +17,7 @@ export default Ember.Component.extend({
 		var self    = this;
 		var target  = this.get('actionTarget') || this;
 
-		var options = Ember.$.extend({}, this.getProperties(props), {
+		var options = Ember.merge(this.getProperties(props), {
 			slide : function(event, ui) {
 				self.set('value', ui.value);
 			},
