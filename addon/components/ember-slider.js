@@ -14,19 +14,10 @@ export default Ember.Component.extend({
 	didInsertElement: function() {
 		this._super.apply(this, arguments);
 
-		var self   = this;
-		var target = this.get('actionTarget') || this;
+		var self    = this;
+		var target  = this.get('actionTarget') || this;
 
-		this.$().slider({
-			animate : this.get('animate'),
-			disabled : this.get('disabled'),
-			max : this.get('max'),
-			min : this.get('min'),
-			orientation : this.get('orientation'),
-			range : this.get('range'),
-			step : this.get('step'),
-			value : this.get('value'),
-			values : this.get('values'),
+		var options = Ember.$.extend({}, this.getProperties(props), {
 			slide : function(event, ui) {
 				self.set('value', ui.value);
 			},
@@ -38,6 +29,8 @@ export default Ember.Component.extend({
 				}
 			}
 		});
+
+		this.$().slider(options);
 
 		this.registerListeners();
 	},
