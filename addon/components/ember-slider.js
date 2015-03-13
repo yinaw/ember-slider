@@ -1,5 +1,11 @@
 import Ember from 'ember';
 
+var props = [
+	'animate', 'disabled', 'max',
+	'min', 'orientation', 'range', 'step',
+	'value', 'values'
+];
+
 export default Ember.Component.extend({
 	classNames: ['silder'],
 	changeAction: null,
@@ -7,6 +13,7 @@ export default Ember.Component.extend({
 
 	didInsertElement: function() {
 		this._super.apply(this, arguments);
+
 		var self = this;
 		var target = this.get('actionTarget') || this;
 
@@ -24,27 +31,35 @@ export default Ember.Component.extend({
 				self.set('value', ui.value);
 			},
 			change : function(event, ui) {
-				(target.sendAction) ? target.sendAction('changeAction', ui.value) :	target.send(self.get('changeAction'), ui.value);
+				(target.sendAction) ? target.sendAction('changeAction', ui.value) : target.send(self.get('changeAction'), ui.value);
 			}
 		});
 
 		this.registerListeners();
 	},
+	
+	proxySlider: function (target, key) {
+		this.$().slider('option', key, this.get(key));
+	},
 
 	registerListeners: function () {
-		var props = ['animate', 'disabled', 'max',
-			'min', 'orientation', 'range', 'step',
-			'value', 'values'];
 		/*jshint loopfunc:false*/
-		for (var i = 0; i < props.length; i++) {
-			this.addObserver(props[i], this, function (target, key) {
-				this.$().slider('option', key, this.get(key));
-			}.bind(this));
+		for (var i = 0, len = props.length; i < len; i++) {
+			this.addObserver(props[i], this, this.proxySlider);
+		}
+		/*jshint loopfunc:true*/
+	},
+	
+	unregisterListeners: function () {
+		/*jshint loopfunc:false*/
+		for (var i = 0, len = props.length; i < len; i++) {
+			this.removeObserver(props[i], this, this.proxySlider);
 		}
 		/*jshint loopfunc:true*/
 	},
 
-	destroyEasyPie: function() {
+	destroyEasyPie: Ember.on('willDestroyElement', function() {
+		this.unregisterListeners();
 		this.$().slider('destroy');
-	}.on('willDestroyElement')
+	})
 });
