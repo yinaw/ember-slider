@@ -1,10 +1,6 @@
 import Ember from 'ember';
 
-var props = [
-	'animate', 'disabled', 'max',
-	'min', 'orientation', 'range', 'step',
-	'value', 'values'
-];
+var props = Object.keys($.ui.slider._proto.options);
 
 export default Ember.Component.extend({
 	classNames:   ['silder'],
