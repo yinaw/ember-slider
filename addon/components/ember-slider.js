@@ -11,7 +11,6 @@ export default Ember.Component.extend({
 		orientation: String,
 		max:         Number,
 		min:         Number,
-		range:       Boolean,
 		disabled:    Boolean,
 		value:       Number,
 		step:        Number
