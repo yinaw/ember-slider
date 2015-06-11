@@ -28,9 +28,9 @@ export default Ember.Component.extend({
 			},
 			change : function (event, ui) {
 				if (target.sendAction) {
-					target.sendAction('changeAction', ui.value);
+					target.sendAction('changeAction', ui.values ? ui.values : ui.value);
 				} else {
-					target.send(self.get('changeAction'), ui.value);
+					target.send(self.get('changeAction'), ui.values ? ui.values : ui.value);
 				}
 			}
 		});
