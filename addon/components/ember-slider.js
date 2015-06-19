@@ -24,13 +24,17 @@ export default Ember.Component.extend({
 
 		var options = Ember.merge(this.getProperties(props), {
 			slide : function (event, ui) {
-				self.set('value', ui.value);
+				if (self.get('values')) {
+				  self.set('values', ui.values);
+				} else {
+				  self.set('value', ui.value);
+				}
 			},
 			change : function (event, ui) {
 				if (target.sendAction) {
-					target.sendAction('changeAction', ui.value);
+					target.sendAction('changeAction', ui.values ? ui.values : ui.value);
 				} else {
-					target.send(self.get('changeAction'), ui.value);
+					target.send(self.get('changeAction'), ui.values ? ui.values : ui.value);
 				}
 			}
 		});
