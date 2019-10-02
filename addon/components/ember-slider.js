@@ -35,7 +35,7 @@ export default Ember.Component.extend({
 			}
 		});
 
-		this.$().slider(options);
+		this.element.addEventListener(options);
 
 		this.registerListeners();
 	},
@@ -43,7 +43,7 @@ export default Ember.Component.extend({
 	willDestroyElement: function() {
 		this.unregisterListeners();
 
-		this.$().slider('destroy');
+		this.element.addEventListener('destroy');
 	},
 
 	proxySlider: function (target, key) {
@@ -54,7 +54,7 @@ export default Ember.Component.extend({
 			value = propType(value);
 		}
 
-		this.$().slider('option', key, value);
+		this.element.addEventListener('option', key, value);
 	},
 
 	registerListeners: function () {
